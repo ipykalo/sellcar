@@ -1,0 +1,11 @@
+### Create User
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "email": "ipyka@gmail.com",
+  "password": "12345"
+}
+
+### Fetch One User
+GET http://localhost:3000/auth/1
