@@ -16,7 +16,7 @@ Content-Type: application/json
 }
 
 ### Fetch One User
-GET http://localhost:3000/auth/4
+GET http://localhost:3000/auth/1
 
 ### Fetch Users
 GET http://localhost:3000/auth?email=ipyka@gmail.com
