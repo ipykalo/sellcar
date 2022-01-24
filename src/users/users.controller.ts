@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, NotFoundException, HttpCode } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, NotFoundException, HttpCode, Session } from '@nestjs/common';
 import { UserService } from './services/users.service';
 import { UserDto } from './dtos/user.dto';
 import { AuthUserDto } from './dtos/auth-user.dto';
@@ -13,15 +13,35 @@ export class UsersController {
 
   constructor(private userService: UserService, private authService: AuthService) { }
 
+  @Get('/whoami')
+  getLoginUser(@Session() session): Promise<User> {
+    return this.userService.findOne(session.userId);
+  }
+
   @Post('/signup')
-  createUser(@Body() body: AuthUserDto): Promise<User> {
-    return this.authService.signup(body.email, body.password);
+  createUser(@Body() body: AuthUserDto, @Session() session): Promise<User> {
+    return this.authService.signup(body.email, body.password)
+      .then((user: User) => {
+        session.userId = user.id;
+        return user;
+      });
   }
 
   @Post('/signin')
   @HttpCode(200)
-  signin(@Body() body: AuthUserDto): Promise<User> {
-    return this.authService.signin(body.email, body.password);
+  signin(@Body() body: AuthUserDto, @Session() session): Promise<User> {
+    return this.authService.signin(body.email, body.password)
+      .then((user: User) => {
+        session.userId = user.id;
+        return user;
+      });
+  }
+
+  @Post('/logout')
+  @HttpCode(200)
+  logout(@Session() session): string {
+    session.userId = null;
+    return 'The user logged out.'
   }
 
   @Get('/:id')

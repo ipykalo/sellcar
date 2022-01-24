@@ -16,8 +16,14 @@ Content-Type: application/json
   "password": "00000"
 }
 
+### Log out a user
+POST http://localhost:3000/auth/logout
+
+### Get the currently logged in user
+GET http://localhost:3000/auth/whoami
+
 ### Update User
-PATCH http://localhost:3000/auth/1
+PATCH http://localhost:3000/auth/8
 Content-Type: application/json
 
 {
@@ -25,7 +31,7 @@ Content-Type: application/json
 }
 
 ### Fetch One User
-GET http://localhost:3000/auth/1
+GET http://localhost:3000/auth/8
 
 ### Fetch Users
 GET http://localhost:3000/auth?email=test5@mail.com
