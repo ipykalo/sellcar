@@ -1,11 +1,13 @@
+import { UserDto } from './dtos/user.dto';
 import { UserService } from './users.service';
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, NotFoundException, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { User } from './user.entity';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
 
 @Controller('auth')
+@Serialize(UserDto)
 export class UsersController {
 
   constructor(private userService: UserService) { }
@@ -15,10 +17,8 @@ export class UsersController {
     return this.userService.create(body.email, body.password);
   }
 
-  @UseInterceptors(SerializeInterceptor)
   @Get('/:id')
   fetchUser(@Param('id') id: string): Promise<User> {
-    console.log('_____Run before handling requiest')
     return this.userService.findOne(parseInt(id))
       .then(user => {
         if (user) {

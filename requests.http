@@ -8,18 +8,18 @@ Content-Type: application/json
 }
 
 ### Update User
-PATCH http://localhost:3000/auth/4
+PATCH http://localhost:3000/auth/1
 Content-Type: application/json
 
 {
-  "email": "test1@mail.com"
+  "email": "test5@mail.com"
 }
 
 ### Fetch One User
 GET http://localhost:3000/auth/1
 
 ### Fetch Users
-GET http://localhost:3000/auth?email=ipyka@gmail.com
+GET http://localhost:3000/auth?email=test5@mail.com
 
 ### Remove User
 DELETE http://localhost:3000/auth/
