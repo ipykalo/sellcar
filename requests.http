@@ -3,8 +3,17 @@ POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-  "email": "user@gmail.com",
-  "password": "12345"
+  "email": "random.user@mail.com",
+  "password": "00000"
+}
+
+### Login User
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+  "email": "random.user@mail.com",
+  "password": "00000"
 }
 
 ### Update User
@@ -22,4 +31,4 @@ GET http://localhost:3000/auth/1
 GET http://localhost:3000/auth?email=test5@mail.com
 
 ### Remove User
-DELETE http://localhost:3000/auth/
+DELETE http://localhost:3000/auth/3

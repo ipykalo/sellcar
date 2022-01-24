@@ -1,20 +1,27 @@
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, NotFoundException, HttpCode } from '@nestjs/common';
+import { UserService } from './services/users.service';
 import { UserDto } from './dtos/user.dto';
-import { UserService } from './users.service';
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from './dtos/create-user.dto';
+import { AuthUserDto } from './dtos/auth-user.dto';
 import { User } from './user.entity';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { AuthService } from './services/auth.service';
 
 @Controller('auth')
 @Serialize(UserDto)
 export class UsersController {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private authService: AuthService) { }
 
   @Post('/signup')
-  createUser(@Body() body: CreateUserDto): Promise<User> {
-    return this.userService.create(body.email, body.password);
+  createUser(@Body() body: AuthUserDto): Promise<User> {
+    return this.authService.signup(body.email, body.password);
+  }
+
+  @Post('/signin')
+  @HttpCode(200)
+  signin(@Body() body: AuthUserDto): Promise<User> {
+    return this.authService.signin(body.email, body.password);
   }
 
   @Get('/:id')
