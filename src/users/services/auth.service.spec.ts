@@ -25,9 +25,10 @@ describe('AuthService', () => {
   });
 
   let mockedUser: Partial<User>;
+  const password = '12345';
 
   beforeEach(async () => {
-    const hashPassword = await bcrypt.hash('12345', 10);
+    const hashPassword = await bcrypt.hash(password, 10);
     mockedUser = { id: 1, email: 'test@gmail.com', password: hashPassword };
   });
 
@@ -40,7 +41,7 @@ describe('AuthService', () => {
     it('should throw an error if email already exists', (done) => {
       jest.spyOn(UserService.prototype, 'find').mockResolvedValue([mockedUser] as User[]);
 
-      authService.signup(mockedUser.email, '12345')
+      authService.signup(mockedUser.email, password)
         .catch(err => {
           expect(err.response.message).toEqual('A user with the email already exists.');
           done();
@@ -51,7 +52,7 @@ describe('AuthService', () => {
       jest.spyOn(UserService.prototype, 'find').mockResolvedValue([] as User[]);
       jest.spyOn(UserService.prototype, 'create').mockResolvedValue(mockedUser as User);
 
-      authService.signup(mockedUser.email, '12345')
+      authService.signup(mockedUser.email, password)
         .then(user => {
           expect(user.email).toEqual(mockedUser.email);
           done();
@@ -64,7 +65,7 @@ describe('AuthService', () => {
     it('should throw error if user doesn\'t exist', (done) => {
       jest.spyOn(UserService.prototype, 'find').mockResolvedValue([] as User[]);
 
-      authService.signin(mockedUser.email, '12345')
+      authService.signin(mockedUser.email, password)
         .catch(err => {
           expect(err.response.message).toEqual('A user with the email does not exist.');
           done();
@@ -82,7 +83,7 @@ describe('AuthService', () => {
 
     it('should login a user', (done) => {
       jest.spyOn(UserService.prototype, 'find').mockResolvedValue([mockedUser] as User[]);
-      authService.signin(mockedUser.email, '12345')
+      authService.signin(mockedUser.email, password)
         .then(user => {
           expect(user.password).toEqual(mockedUser.password);
           done();
