@@ -87,8 +87,7 @@ describe('AuthService', () => {
         .then(user => {
           expect(user.password).toEqual(mockedUser.password);
           done();
-        })
-        .catch(err => expect(err).toBeFalsy());
+        });
     });
   });
 });
