@@ -5,7 +5,6 @@ import { AuthService } from './auth.service';
 import { Repository } from "typeorm";
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as bcrypt from "bcrypt";
-import { doesNotMatch } from 'assert';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -41,7 +40,7 @@ describe('AuthService', () => {
     it('should throw an error if email already exists', (done) => {
       jest.spyOn(UserService.prototype, 'find').mockResolvedValue([mockedUser] as User[]);
 
-      authService.signup(mockedUser.email, mockedUser.password)
+      authService.signup(mockedUser.email, '12345')
         .catch(err => {
           expect(err.response.message).toEqual('A user with the email already exists.');
           done();
@@ -52,7 +51,7 @@ describe('AuthService', () => {
       jest.spyOn(UserService.prototype, 'find').mockResolvedValue([] as User[]);
       jest.spyOn(UserService.prototype, 'create').mockResolvedValue(mockedUser as User);
 
-      authService.signup(mockedUser.email, mockedUser.password)
+      authService.signup(mockedUser.email, '12345')
         .then(user => {
           expect(user.email).toEqual(mockedUser.email);
           done();
@@ -65,7 +64,7 @@ describe('AuthService', () => {
     it('should throw error if user doesn\'t exist', (done) => {
       jest.spyOn(UserService.prototype, 'find').mockResolvedValue([] as User[]);
 
-      authService.signin(mockedUser.email, mockedUser.password)
+      authService.signin(mockedUser.email, '12345')
         .catch(err => {
           expect(err.response.message).toEqual('A user with the email does not exist.');
           done();
