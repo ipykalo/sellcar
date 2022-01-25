@@ -1,3 +1,4 @@
+import { CurrentUser } from './decorators/current-user.decorator';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, NotFoundException, HttpCode, Session } from '@nestjs/common';
 import { UserService } from './services/users.service';
 import { UserDto } from './dtos/user.dto';
@@ -14,17 +15,13 @@ export class UsersController {
   constructor(private userService: UserService, private authService: AuthService) { }
 
   @Get('/whoami')
-  getLoginUser(@Session() session): Promise<User> {
-    return this.userService.findOne(session.userId);
+  getLoginUser(@CurrentUser() user: User): UserDto {
+    return user;
   }
 
   @Post('/signup')
-  createUser(@Body() body: AuthUserDto, @Session() session): Promise<User> {
-    return this.authService.signup(body.email, body.password)
-      .then((user: User) => {
-        session.userId = user.id;
-        return user;
-      });
+  createUser(@Body() body: AuthUserDto): Promise<User> {
+    return this.authService.signup(body.email, body.password);
   }
 
   @Post('/signin')
