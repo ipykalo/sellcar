@@ -37,4 +37,4 @@ GET http://localhost:3000/auth/8
 GET http://localhost:3000/auth?email=test5@mail.com
 
 ### Remove User
-DELETE http://localhost:3000/auth/3
+DELETE http://localhost:3000/auth/6
